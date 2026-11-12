@@ -1,0 +1,19 @@
+check,passed,detail
+Row count unchanged,True,62516 vs 62516
+Complaint ID unique,True,
+No original values overwritten,True,original columns preserved
+Yearly counts sum to total,True,"{2017: 5394, 2018: 7872, 2019: 7075, 2020: 8942, 2021: 11149, 2022: 12953, 2023: 9131}"
+Monthly counts sum to total,True,"76 months, none missing"
+Product counts sum to total,True,
+Timely Yes+No+Not assessed = total,True,"{'Yes': 58619, 'No': 2403, 'Not assessed (In progress)': 1494}"
+Not assessed == In progress,True,1:1 match
+No negative intervals,True,"min=0, max=275"
+No missing months in range,True,all months present with >0 complaints
+Baseline KPI: Total complaints,True,62516
+Baseline KPI: Timely % (Yes / valid Yes+No),True,96.06
+Baseline KPI: Valid timely records (denominator),True,61022
+Baseline KPI: Excluded from timely (In progress),True,1494
+Baseline KPI: Avg forwarding interval (days),True,1.225
+Baseline KPI: Median forwarding interval (days),True,0.0
+Baseline KPI: % forwarded same day,True,79.39
+Baseline KPI: Intervals >= 30 days,True,454

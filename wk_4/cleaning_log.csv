@@ -1,0 +1,19 @@
+step,field,action,rows_affected,rationale
+1,ALL,Inspected structure,62516,62516 rows x 12 columns; original file left untouched
+2,text fields,Trimmed whitespace / collapsed double spaces / upper-cased State,0,No leading/trailing/double spaces found; step is a safeguard
+3,Complaint ID,Checked uniqueness,0,0 duplicate IDs -> valid primary key; no rows dropped
+3,ALL,Checked fully duplicated rows,0,0 duplicate records
+4,Dates,Validated types and order (Date received >= Date submitted),0,Both columns are true datetimes; 0 negative intervals; range 2017-05-01 to 2023-08-28
+4,Derived,"Added Year, Quarter, Year_Quarter, Month_Num, Month_Name, Year_Month, Month_Start",62516,Based on Date submitted (CFPB receipt date)
+4,Derived,Added Is_Boundary_Month / Is_Partial_Year,1461,2017-05 and 2023-08 are boundary months (data ends 28 Aug 2023); 2017 and 2023 are partial years - exclude from forecasting/YoY or caveat
+4,Derived,"Added Forwarding_Interval_Days, Interval_Band, Long_Interval_Flag (>= 30 days)",454,"Interval = CFPB forwarding time, NOT company response/resolution time. Max 275 days; kept (valid dates), flagged not removed"
+5,Sub-issue,Blank -> 'No sub-issue recorded',10858,"Structural: many Issues have no sub-issues at all (e.g. Fraud or scam, Struggling to pay mortgage). Not an error"
+5,Company public response,Blank -> 'No public response recorded',2175,"Public response is optional; 1,494 of these are In-progress cases, rest are closed cases with none recorded"
+5,Sub-product,Blank -> 'Not provided',7,"7 rows, all Checking/savings with credit-reporting issues - possible mis-tagging; kept, flagged"
+5,Timely response?,Blank -> 'Not assessed (In progress)' (NOT 'No'),1494,"All 1,494 blanks are exactly the 'In progress' records (all 2023). Excluded from timely-% denominator and reported separately"
+6,Product,Added Product_Short (display label); original Product kept,62516,"9 products, no spelling variants; short labels for dashboard readability only"
+6,Issue,Added Issue_Std: merged 2 wording variants within the same product,2,"Other near-duplicates (e.g. 'Closing an account' vs 'Closing your account', 'Trouble using the card' vs '...your card') are CFPB taxonomy differences across products - NOT merged; flagged in data-quality doc"
+6,Company response to consumer,Added Response_Clean: 'Closed' -> 'Closed (no detail recorded)',8,"8 rows with bare 'Closed' (all marked Timely=No); kept as own category, not merged into other closed types"
+7,Submitted via,"Reviewed 'Web Referral' (90) vs 'Referral' (10,766) and 'Email' (2)",92,"Genuine CFPB channels, kept distinct; Email/Web Referral too small for channel analysis"
+7,Date submitted,Weekend submissions flagged,7946,Valid (online/phone intake); informational only
+7,Dates,"July 2023 volume spike (1,749 vs ~1,050 neighbours) and Nov 2018-Mar 2019 dip noted",0,Cause not determinable from data; kept as reported - do not interpret as misconduct
